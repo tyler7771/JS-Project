@@ -18,7 +18,7 @@ This project will also include:
 
 The app will be a single page app that has a modal for uploading backgrounds if the user would like. The game screen will take up most of the screen with ship options to the left and preloaded themes on the right. Game instructions and my contact information will be under the game screen.
 
-![Wireframes](http://res.cloudinary.com/dfmvfna21/image/upload/v1479101575/JS_Project_mockup_wziokb.png)
+![Wireframes](http://res.cloudinary.com/dfmvfna21/image/upload/v1479167237/Updated_Site_mockup_bzvjve.png)
 
 I will use the cloudinary upload widget to handle uploading user's custom backgrounds for custom themes.
 ![Wireframes](http://res.cloudinary.com/dfmvfna21/image/upload/v1479101575/Upload_Widget_jmvtyv.png)
