@@ -2,10 +2,21 @@ body {
   display: flex;
   justify-content: space-around;
   background-color: black;
+  margin: 0;
+  padding: 0;
+  align-items: center;
 }
 
 canvas {
-  height: 550px;
+  height: 500px;
   width: 1000px;
   border: 1px solid white;
+}
+
+#falcon {
+  display: none;
+}
+
+#rock {
+  display: none;
 }
