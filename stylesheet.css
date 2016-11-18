@@ -54,6 +54,17 @@ canvas {
   color: #FF7F00;
 }
 
+#mute-button {
+  position: absolute;
+  bottom: 70px;
+  background: url("http://res.cloudinary.com/dfmvfna21/image/upload/v1479491798/Speaker_Icon_jyta2z.png");
+  height: 40px;
+  width: 40px;
+  background-color: black;
+  border: none;
+  outline: none;
+}
+
 .title-background {
   position: absolute;
   width: 1000px;
