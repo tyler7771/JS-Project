@@ -110,7 +110,7 @@ canvas {
 
 .description {
   position: absolute;
-  bottom: 100px;
+  top: 575px;
   font-size: 20px;
   width: 975px;
   text-align: center;
