@@ -1,71 +1,139 @@
-# Flight Game
+# Never Tell Me the Odds
 
-Users fly ships around objects in space, the desert, or wherever they choose in this simple yet addicting game. Users press the space bar or click the window to make the ship go up and release and the ship will fall. The game ends when they crash their ship into an object or the boundaries of the screen.
+![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1479496494/Screen_Shot_2016-11-18_at_10.54.49_AM_yi8lsn.png)
 
-## Functionality and MVP
+[Live Site](https://tyler7771.github.io/NeverTellMeTheOdds/)
 
-With this game, users will be able to:
-- [ ] Use either the space bar or mouse click to raise and lower the ship.
-- [ ] Track their current score and personal best for the session.
-- [ ] Change background layouts.
-- [ ] Choose between different ships.
-- [ ] I would like to also include the option to upload a custom theme or ship for the game.
+Users fly the Millennium Falcon through an astroid field in this fun, simple, and addicting game. Press the space bar to make the ship go up and release and the ship will fall. The game ends when they crash their ship into an object or the boundaries of the screen.
 
-This project will also include:
-- [ ] A production README
+## Features & Implementation
 
-## Wireframes
+The game is made using vanilla JavaScript. It tracks the score over the course of the game and store's the user's high score for the life of the window. As the user's score gets higher the astroids travel faster towards the ship making the game more difficult.
 
-The app will be a single page app that has a modal for uploading backgrounds if the user would like. The game screen will take up most of the screen with ship options to the left and preloaded themes on the right. Game instructions and my contact information will be under the game screen.
+![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1479496472/Screen_Shot_2016-11-18_at_11.12.51_AM_mpvrwg.png)
 
-![Wireframes](http://res.cloudinary.com/dfmvfna21/image/upload/v1479167237/Updated_Site_mockup_bzvjve.png)
+#### Ship movement
 
-I will use the cloudinary upload widget to handle uploading user's custom backgrounds for custom themes.
-![Wireframes](http://res.cloudinary.com/dfmvfna21/image/upload/v1479101575/Upload_Widget_jmvtyv.png)
+I use a sprite to animate the ship back and forth as the user plays the game. The animation is done through tracking the animation point of the ship and on the next frame rendering incrementing the frame position to render a new position of the ship. The portion of the code that does that looks like this:
 
+```js
+constructor() {
+  this.frameIndex = 0;
+  this.tickCount = 0;
+}
 
-## Architecture and Technologies
+draw(context) {
+  const imgSprite = this.sprite({
+    context: context,
+    width: 3000,
+    height: 100,
+    image: img,
+    numberOfFrames: 30,
+    ticksPerFrame: 3
+  });
 
-The game will use the following technologies:
+  imgSprite.update();
+  imgSprite.render();
+}
 
-- Vanilla Javascript and JQuery to handle game logic
-- `Easel.js` with `HTML5 Canvas` for DOM manipulation and rendering
-- Webpack to bundle
+sprite(options) {
+  let that = {},
+    ticksPerFrame = options.ticksPerFrame || 0,
+    numberOfFrames = options.numberOfFrames || 1;
 
-I also plan on using the following scripts in the game:
+  that.context = options.context;
+  that.width = options.width;
+  that.height = options.height;
+  that.image = options.image;
 
-`Board.js` This will handle rendering and handing the scenes for the game. Including background, floor, ceiling, and obstacles.
+  that.update = function () {
+    this.tickCount += 1;
+    if (this.tickCount > ticksPerFrame) {
+      this.tickCount = 0;
+      if (this.frameIndex < numberOfFrames - 1) {
+        this.frameIndex += 1;
+      } else {
+        this.frameIndex = 0;
+      }
+    }
+  }.bind(this);
 
-`Ship.js` This will handle controlling the ship, and any logic needed to control how the ship moves on the DOM.
+  that.render = function () {
+    that.context.drawImage(
+      that.image,
+      this.frameIndex * that.width / numberOfFrames,
+      0,
+      that.width / numberOfFrames,
+      that.height,
+      this.pos[0],
+      this.pos[1],
+      that.width / numberOfFrames,
+      that.height);
+  }.bind(this);
+  return that;
+}
+```
 
-`Game.js` Handles any game logic such as starting, stoping, and scores.
+### Game Over
 
-## Timeline
+When the user collides the ship with an asteroid there is an explosion and a game over page is rendered.
 
-### Day 1
-Set up the project, get webpack set up, start to learn how to use `Easel` to begin rendering a stage on the screen. Goals for the day:
-- Get webpack and all my packages setup
-- Render some objects on the screen with Canvas!
+![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1479496490/Screen_Shot_2016-11-18_at_10.53.18_AM_owrekt.png)
 
-### Day 2
-Learn how to render the objects that I want on the canvas using `Easel`. Learn how to get objects moving across the screen and begin implementing logic for the game. Goals for the day:
-- Get objects rendering and moving across the screen
-- Have themes render
-- Possibly start to have the different ships rendering on the screen.
+On every frame step there is a check for a crash. The checkCrash method looks at the the position of the ship and each obstacle on the screen and checks if the positions of the two items would be a crash. If there is a crash it returns true and the game over sequence run. If there's no crash, the game continues to run until there is one.
 
-### Day 3
-Implement the rules for the game. The game ends when a user runs into an object, the ceiling, or the floor. Score is compared to the top score and updated if necessary. Ship moves up and down at a rate that is challenging but not impossible for users. Goals for the day:
-- The ship moves up and down, speed is fine tuned to make the game enjoyable
-- Scoring works
-- Game is completely functional and bug free
-- Page is styled and all works bug free
+```js
+step(time) {
+  this.moveObjects(time);
+  const crash = this.checkCrash();
 
-### Day 4
-Make sure that ships are interchangeable, themes are interchangeable, users can make custom themes and ships. Goals for the day:
-- Ships and themes are interchangeable
-- Get cloudinary widget set up.
-- Users have the ability to upload custom themes and ships
+  if (crash) {
+    this.crash = true;
+  } else {
+    this.addObstacle();
+    this.removeObstacle();
+    if (this.playing) {
+      this.score += 1;
+    }
+  }
+}
 
-## Bonus Features
-- Users can upload custom ships and use them
-- Users can change the speed that obstacles move towards them and change rise and fall speeds of the ship
+checkCrash() {
+  const ship = this.ship[0];
+  let returnValue = false;
+
+  this.obstacles.forEach((obstacle) => {
+    if (obstacle.pos[0] > 249 && obstacle.pos[0] < 398) {
+      if (ship.pos[1] > obstacle.pos[1]
+        && (ship.pos[1] + 100) < (obstacle.pos[1] + 150)) {
+          returnValue = true;
+      } else if ((ship.pos[1] < obstacle.pos[1])
+        && (ship.pos[1] + 70) > (obstacle.pos[1])) {
+          returnValue = true;
+      } else if ((ship.pos[1] < (obstacle.pos[1] + 120))
+        && (ship.pos[1] + 100) > (obstacle.pos[1] + 150)) {
+          returnValue = true;
+      }
+    } else if (ship.pos[1] <= -25 || ship.pos[1] >= 425){
+      returnValue = true;
+    }
+  });
+  return returnValue;
+}
+```
+
+## Future Additions to the Site
+
+I had an absolute blast making this game and would love to keep adding on to it!
+
+### Different Ships and Planets
+
+I'd love to add other ships and planets from the Star Wars universe to allow users to choose the ship they want to fly and where they want to fly it.
+
+### Gravity changing
+
+Add a feature that allows users to choose the gravity of the game. If they find it too hard make the ship down slower, or if they find it too easy make the ship go down faster.
+
+### Custom backgrounds
+
+Allow users to upload their own custom backgrounds by utilizing cloudinary's upload widget so they can fly their favorite ships anywhere they want!
