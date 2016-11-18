@@ -16,12 +16,18 @@ The game is made using vanilla JavaScript. It tracks the score over the course o
 
 I use a sprite to animate the ship back and forth as the user plays the game. The animation is done through tracking the animation point of the ship and on the next frame rendering incrementing the frame position to render a new position of the ship. The portion of the code that does that looks like this:
 
+
+The frame index and tick count are how I find the position of the ship that I want. They're stored as instance variables so they aren't erased on every render call.
 ```js
 constructor() {
+  // The portion of the sprite needed currently
   this.frameIndex = 0;
+  // How many frames it's been rendered
   this.tickCount = 0;
 }
-
+```
+The draw method creates a sprite instance, updates the sprite position based on the frame index and tick count and then renders the ship.
+```js
 draw(context) {
   const imgSprite = this.sprite({
     context: context,
@@ -35,7 +41,11 @@ draw(context) {
   imgSprite.update();
   imgSprite.render();
 }
+```
 
+The sprite function takes the logic given to it by the draw function and returns the image of the ship that's needed.
+
+```js
 sprite(options) {
   let that = {},
     ticksPerFrame = options.ticksPerFrame || 0,
@@ -46,6 +56,7 @@ sprite(options) {
   that.height = options.height;
   that.image = options.image;
 
+  // Updates the tickCount and frameIndex(if needed)
   that.update = function () {
     this.tickCount += 1;
     if (this.tickCount > ticksPerFrame) {
@@ -58,15 +69,22 @@ sprite(options) {
     }
   }.bind(this);
 
+  // Takes all the information given and finds the portion of the sprite needed currently
   that.render = function () {
     that.context.drawImage(
+      // The sprite itself
       that.image,
+      // Horizontal position in the sprite
       this.frameIndex * that.width / numberOfFrames,
+      // Vertical position in the sprite
       0,
+      // Height and width of the image on the sprite
       that.width / numberOfFrames,
       that.height,
+      // Position on the canvas where it's drawn
       this.pos[0],
       this.pos[1],
+      // Height and width of the image returned
       that.width / numberOfFrames,
       that.height);
   }.bind(this);
@@ -80,7 +98,7 @@ When the user collides the ship with an asteroid there is an explosion and a gam
 
 ![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1479496490/Screen_Shot_2016-11-18_at_10.53.18_AM_owrekt.png)
 
-On every frame step there is a check for a crash. The checkCrash method looks at the the position of the ship and each obstacle on the screen and checks if the positions of the two items would be a crash. If there is a crash it returns true and the game over sequence run. If there's no crash, the game continues to run until there is one.
+On every frame step there is a check for a crash. If there is a crash it returns true and the game over sequence run. If there's no crash, the game continues to run until there is one.
 
 ```js
 step(time) {
@@ -97,23 +115,31 @@ step(time) {
     }
   }
 }
+```
 
+The checkCrash method looks at the the position of the ship and each obstacle on the screen and checks if the positions of the two items would be a crash.
+```js
 checkCrash() {
   const ship = this.ship[0];
   let returnValue = false;
 
   this.obstacles.forEach((obstacle) => {
+    // The obstacle is range of where the ship is
     if (obstacle.pos[0] > 249 && obstacle.pos[0] < 398) {
+      // Ship hits the obstacle in the middle
       if (ship.pos[1] > obstacle.pos[1]
         && (ship.pos[1] + 100) < (obstacle.pos[1] + 150)) {
           returnValue = true;
+      // Ship hits the obstacle with on the bottom
       } else if ((ship.pos[1] < obstacle.pos[1])
         && (ship.pos[1] + 70) > (obstacle.pos[1])) {
           returnValue = true;
+      // Ship hits the obstacle with the top
       } else if ((ship.pos[1] < (obstacle.pos[1] + 120))
         && (ship.pos[1] + 100) > (obstacle.pos[1] + 150)) {
           returnValue = true;
       }
+      // Ship hits the top or bottom of the screen
     } else if (ship.pos[1] <= -25 || ship.pos[1] >= 425){
       returnValue = true;
     }
