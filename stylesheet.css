@@ -4,10 +4,20 @@ body {
   background-color: black;
   margin: 0;
   padding: 0;
-  align-items: center;
+  margin-top: 75px;
+  /*height: 100%;*/
+  font-family: Helvetica, sans-serif;
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+  color: #FFD700;
+  font-weight: 600;
 }
 
 canvas {
+  position: absolute;;
   height: 500px;
   width: 1000px;
   border: 1px solid white;
@@ -19,4 +29,112 @@ canvas {
 
 #rock {
   display: none;
+}
+
+#title-screen {
+  position: relative;
+  height: 500px;
+  width: 1000px;
+}
+
+#title-screen > h1 {
+  position: absolute;
+  font-size: 50px;
+  left: 170px;
+}
+
+#title-screen > p {
+  position: absolute;
+  font-size: 40px;
+  left: 450px;
+  top: 70px;
+}
+
+#title-screen > p:hover {
+  color: #FF7F00;
+}
+
+.title-background {
+  position: absolute;
+  width: 1000px;
+  height: 500px;
+  top: 1px;
+}
+
+.title-explosion {
+  position: absolute;
+  top: 1px
+}
+
+.title-falcon {
+  position: absolute;
+  bottom: -37px;
+  left: 340px;
+  transform: rotate(16deg);
+}
+
+.rocks {
+  position: absolute;
+  top: 15px;
+  left: 150px;
+  transform: rotate(91deg);
+}
+
+.game-over {
+  background-image: url("http://res.cloudinary.com/dfmvfna21/image/upload/v1479446616/explosion_PNG15401_fhkpyd.png");
+  position: absolute;
+  align-self: center;
+  font-size: 50px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  height: 475px;
+  width: 750px;
+  justify-content: center;
+  top: 90px
+}
+
+.game-over p {
+  margin: 25px 0;
+}
+
+.game-over span {
+  font-size: 40px;
+  cursor: pointer;
+  position: relative;
+}
+
+.game-over span:hover {
+  color: #FF7F00;
+}
+
+.description {
+  position: absolute;
+  bottom: 100px;
+  font-size: 20px;
+  width: 975px;
+  text-align: center;
+}
+
+footer {
+  padding: 20px;
+  position: absolute;
+  bottom: 0;
+}
+
+footer > a {
+  font-family: Helvetica, sans-serif;
+  text-shadow:
+    -2px -2px 0 #000,
+    2px -2px 0 #000,
+    -2px 2px 0 #000,
+    2px 2px 0 #000;
+  color: #FFD700;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0 20px;
+}
+
+footer > a:hover {
+  color: #FF7F00;
 }
