@@ -18,10 +18,11 @@ body {
 
 .game {
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
-canvas {
-  position: absolute;
+div > canvas {
   height: 500px;
   width: 1000px;
   border: 1px solid white;
@@ -36,7 +37,7 @@ canvas {
 }
 
 #title-screen {
-  position: relative;
+  position: absolute;
   height: 500px;
   width: 1000px;
   cursor: pointer;
@@ -76,13 +77,11 @@ canvas {
   width: 1000px;
   height: 500px;
   top: 1px;
-  left: 1px;
 }
 
 .title-explosion {
   position: absolute;
   top: 1px;
-  left: 1px;
 }
 
 .title-falcon {
@@ -110,7 +109,6 @@ canvas {
   height: 475px;
   width: 750px;
   justify-content: center;
-  top: 54px;
   cursor: pointer;
 }
 
@@ -205,7 +203,7 @@ canvas {
   position: absolute;
   display: flex;
   justify-content: space-between;
-  top: 20px;
+  top: -20px;
   font-size: 30px;
 }
 
