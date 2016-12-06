@@ -2,7 +2,7 @@
 
 ![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1479496494/Screen_Shot_2016-11-18_at_10.54.49_AM_yi8lsn.png)
 
-[Live Site](https://tyler7771.github.io/NeverTellMeTheOdds/)
+[Live Site](http://nevertellmetheodds.us)
 
 Users fly the Millennium Falcon through an astroid field in this fun, simple, and addicting game. Press the space bar to make the ship go up and release and the ship will fall. The game ends when they crash their ship into an object or the boundaries of the screen.
 
@@ -10,7 +10,7 @@ Users fly the Millennium Falcon through an astroid field in this fun, simple, an
 
 The game is made using vanilla JavaScript. It tracks the score over the course of the game and store's the user's high score for the life of the window. As the user's score gets higher the astroids travel faster towards the ship making the game more difficult.
 
-![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1479496472/Screen_Shot_2016-11-18_at_11.12.51_AM_mpvrwg.png)
+![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1481063005/ntmto1_t7bpne.gif)
 
 #### Ship movement
 
