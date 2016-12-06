@@ -96,7 +96,7 @@ sprite(options) {
 
 When the user collides the ship with an asteroid there is an explosion and a game over page is rendered.
 
-![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1479496490/Screen_Shot_2016-11-18_at_10.53.18_AM_owrekt.png)
+![Alt text](http://res.cloudinary.com/dfmvfna21/image/upload/v1481063375/Screen_Shot_2016-12-06_at_2.28.46_PM_heuclw.png)
 
 On every frame step there is a check for a crash. If there is a crash it returns true and the game over sequence run. If there's no crash, the game continues to run until there is one.
 
