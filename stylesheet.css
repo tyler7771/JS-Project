@@ -192,6 +192,7 @@ div > canvas {
 
 .modal-start {
   font-size: 30px;
+  text-align: center;
 }
 
 .modal-start:hover {
